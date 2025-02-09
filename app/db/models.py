@@ -24,7 +24,8 @@ class Hotel(Base):
     categoria = Column(String)
     piscina = Column(Boolean, default=False)
     localidad = Column(String)
-    habitacion = relationship("Habitacion", backref="hotel", cascade="delete,merge")
+
+    habitaciones = relationship("Habitacion", back_populates="hotel", cascade="delete,merge")
 
 
 # CREATE TABLE hotel (
@@ -45,6 +46,8 @@ class Habitacion(Base):
     desayuno = Column(Boolean, default=False)
     ocupada = Column(Boolean, default=False)
     id_hotel = Column(Integer, ForeignKey("hotel.id", ondelete="CASCADE"))
+
+    hotel = relationship("Hotel", back_populates="habitaciones")
 
 # CREATE TABLE habitacion (
 #      id INT AUTO_INCREMENT PRIMARY KEY,
