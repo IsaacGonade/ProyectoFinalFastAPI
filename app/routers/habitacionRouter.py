@@ -25,10 +25,35 @@ def insert_habitacion(id_hotel: int, habitacion: schemas.Habitacion, db: Session
     newHabitacion.precio = habitacion.precio
     newHabitacion.desayuno = habitacion.desayuno
     newHabitacion.ocupada = habitacion.ocupada
-    newHabitacion.id_hotel = habitacion.id_hotel
+    newHabitacion.id_hotel = id_hotel
 
     db.add(newHabitacion)
     db.commit()
     db.refresh(newHabitacion)
 
     return newHabitacion
+
+@router.delete("/borrar/{id_habitacion}")
+def delete_habitacion(id_habitacion:int, db:Session = Depends(get_db)):
+    habitacion = db.query(models.Habitacion).filter(models.Habitacion.id == id_habitacion).first()
+    if habitacion:
+        db.delete(habitacion)
+        db.commit()
+        return {"Mensaje": "Habitacion borrada"}
+    else:
+        raise HTTPException(status_code=404, detail="Habitacion no encontrada")
+
+
+@router.put("/editar/{id_habitacion}")
+def update_habitacion(id_habitacion:int, habitacion:schemas.Habitacion, db:Session = Depends(get_db)):
+    newHabitacion = db.query(models.Habitacion).filter(models.Habitacion.id == id_habitacion).first()
+    if newHabitacion:
+        newHabitacion.tamanio = habitacion.tamanio
+        newHabitacion.precio = habitacion.precio
+        newHabitacion.desayuno = habitacion.desayuno
+        newHabitacion.ocupada = habitacion.ocupada
+
+        db.commit()
+        return newHabitacion
+    else:
+        raise HTTPException(status_code=404, detail="Habitacion no encontrada")

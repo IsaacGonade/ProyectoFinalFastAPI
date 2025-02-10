@@ -41,4 +41,3 @@ class Habitacion(BaseModel):
     precio: int
     desayuno: bool
     ocupada: bool
-    id_hotel: int
