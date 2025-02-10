@@ -5,11 +5,12 @@ from sqlalchemy.orm import Session, joinedload
 from app.repository import schemas
 from app.db import models
 from app.db.database import get_db
+from app.security import JWTAuth
 
 router = APIRouter(prefix="/api/hoteles", tags=["Hoteles"])
 
 @router.get("/")
-def get_all(db:Session = Depends(get_db)):
+def get_all(db:Session = Depends(get_db), token:str = Depends(JWTAuth.oauth2_scheme)):
     hoteles = db.query(models.Hotel).options(joinedload(models.Hotel.habitaciones)).all()
     return hoteles
 
@@ -27,7 +28,7 @@ def get_hotel_by_categoria(categoria:str, db:Session = Depends(get_db)):
 
 
 @router.post("/nuevoHotel")
-def insert_hotel(hotel:schemas.Hotel, db: Session = Depends(get_db)):
+def insert_hotel(hotel:schemas.Hotel, db: Session = Depends(get_db), token:str = Depends(JWTAuth.oauth2_scheme)):
     newHotel = models.Hotel()
     newHotel.nombre = hotel.nombre
     newHotel.descripcion = hotel.descripcion
