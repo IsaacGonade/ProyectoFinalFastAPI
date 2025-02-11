@@ -1,4 +1,4 @@
-Memoria del proyecto manage:
+Memoria del proyecto:
 <br>
 <p>Desarrollo de una API con FastAPI para la gestion de hoteles y habitaciones con seguridad integrada. Isaac González Adeva</p>
 <br>
